@@ -1,0 +1,25 @@
+.todo-card {
+    border: none;
+    background-color: white;
+    box-shadow: 0 0.3rem 5px rgba(0, 0, 0, 0.15); 
+    transition: transform 0.4s;
+    position: relative;
+}
+
+.todo-card:hover {
+    transform: translate(0, -1rem);
+}
+
+.todo-card > div {
+    padding: 2rem 1.5rem;
+}
+
+.todo-title {
+    font-size: 2rem;
+}
+
+.arrow-card {
+    position: absolute;
+    top: 85%;
+    right: 8%;
+}

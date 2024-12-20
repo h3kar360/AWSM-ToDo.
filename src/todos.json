@@ -1,0 +1,30 @@
+[
+    {
+        "title": "Dog Care",
+        "todos": [
+            "walk dog",
+            "play with dog",
+            "eat dog",
+            "shave dog"
+        ]
+    },
+    {
+        "title": "Skin Care",
+        "todos": [
+            "go eat food",
+            "think bout future",
+            "wash face",
+            "care skin",
+            "shave beard"
+        ]
+    },
+    {
+        "title": "Teusday Day Care",
+        "todos": [
+            "eat food",
+            "get a date",
+            "think bout life",
+            "sheeesshhh"
+        ]
+    }
+]

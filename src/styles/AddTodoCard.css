@@ -1,0 +1,31 @@
+.todo-card-add{
+    background-color: rgb(206, 206, 206);
+    border-style: dashed;
+    border-color: gray;
+    border-width: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo-card-add:hover {
+    background-color: rgb(167, 167, 167);
+    color: rgb(206, 206, 206);
+    border-color: rgb(105, 105, 105);
+}
+
+.todo-card-add:hover > .text-add, .todo-card-add:hover > .card-add-icon {
+    color: rgb(206, 206, 206);
+}
+
+.text-add {
+    color:gray;
+    padding-bottom: 1rem;
+    font-size: 1.3rem;;
+}
+
+.card-add-icon {
+    color: gray;
+    stroke-width: 0.05rem;
+}
