@@ -42,9 +42,18 @@ hr {
     margin-bottom: 1rem;
 }
 
-.add-task {
+.placeholder-button {
     position: fixed;
-    color: blueviolet;
-    top: 40rem;
-    right: 23rem;
+    bottom: 2rem;
+    right: 2rem;    
+    border: none;
+    background-color: transparent;
+}
+
+.add-task {    
+    color: blueviolet;    
+}
+
+.add-task:hover {
+    color: #5c0b81;
 }

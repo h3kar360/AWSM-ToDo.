@@ -3,28 +3,23 @@ import '../styles/TodoComp.css';
 import { RxCross2 } from "react-icons/rx";
 import { IconContext } from 'react-icons';
 
-const TodoComp = () => {
-    
+const TodoComp = ({ task }) => {    
     const [selOption, setSelOption] = useState('');
 
   return (
     <div className='todoComp-container'>
         <div>
-            <label className={`radio ${selOption === 'done' ? 'selected' : ''}`}>
-                <input
-                    type="radio"
-                    name="todo-radio"
-                    value="done"
-                    onChange={(e) => setSelOption(e.target.value)}
-                />
-                <span className="custom-radio"></span>
+            <label class="checkbox-container">
+                <input type="checkbox" class="checkbox-input" />
+                <span class="checkbox-checkmark"></span>
             </label>
+
             <div>
                 <div className='text'>
-                    Eat poop
+                    {task.todo}
                 </div>
                 <div className='date-time'>
-                    10-0-9 10.00
+                    {task.date}
                 </div>
             </div>
             <IconContext.Provider

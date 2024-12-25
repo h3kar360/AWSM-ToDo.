@@ -9,18 +9,35 @@ label {
     font-size: 2rem;
 }
 
+.button-container {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+}
+
 .submit-button {
     border: none;
     border-radius: 10px;
     padding: 1rem;
     color: white;
     background-color: blueviolet;
-    font-size: 1.5rem;
-    position: absolute;
-    bottom: 2rem;
-    right: 2rem;
+    font-size: 1.5rem;    
 }
 
 .submit-button:hover {
     background-color: #5c0b81;
+}
+
+.del-button {
+    background-color: red;
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    color: white;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.del-button:hover {
+    background-color: rgb(187, 0, 0);
 }

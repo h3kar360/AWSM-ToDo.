@@ -3,10 +3,11 @@ import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } 
 import './styles/App.css';
 import MainLayout from './layout/MainLayout';
 import HomePage from './pages/HomePage';
-import TodoPage from './pages/TodoPage';
+import TodoPage, { todoLoader } from './pages/TodoPage';
 import AddTodoPage from './pages/AddTodoPage';
 
 const App = () => {
+  // add todo
   const addTodo = async (newTodo) => {
     try {
       const res = await fetch('/api/api/todo', {
@@ -21,14 +22,29 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
+  } 
+
+  // add task 
+  const addNewTask = async (newTaskData, id) => {
+    try {
+      await fetch(`/api/api/todo/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newTaskData)
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<MainLayout/>}>
-        <Route index element={<HomePage/>}/>
+        <Route index element={<HomePage/>} loader={todoLoader}/>
         <Route path='/add-todo' element={<AddTodoPage AddNewTodo={addTodo}/>}/>
-        <Route path='/todo/:id' element={<TodoPage/>}/>
+        <Route path='/todo/:id' element={<TodoPage addNewTask={addNewTask}/>} loader={todoLoader}/>
       </Route>
     )
   );

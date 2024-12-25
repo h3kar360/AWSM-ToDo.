@@ -13,57 +13,60 @@
     position: relative;
 }
 
-.radio-group {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
+/* Style the container */
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  width: 40px;
+  height: 40px;
 }
 
-.radio {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    cursor: pointer;
-    color: #333;
-    position: relative;
+/* Hide the default checkbox */
+.checkbox-input {
+  display: none;
 }
 
-.radio input {
-    display: none; 
+/* Style the custom checkbox */
+.checkbox-checkmark {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: #e0e0e0; /* Light gray for the unchecked state */
+  border: 2px solid #e0e0e0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, border-color 0.3s, transform 0.2s ease-in-out;
 }
 
-.custom-radio {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ccc;
-    border-radius: 50%;
-    margin-right: 10px;
-    transition: all 0.3s ease;
-    position: relative;
+/* Add the tick mark */
+.checkbox-checkmark::after {
+  content: '';
+  width: 0.6rem;
+  height: 1.2rem;
+  border: solid white;
+  border-width: 0 4px 4px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.2s ease-in-out;
+  position: absolute;
+  opacity: 0;
 }
 
-.radio.selected .custom-radio {
-    border-color: #6c63ff;
-    background: #6c63ff;
+/* Style when the checkbox is checked */
+.checkbox-input:checked + .checkbox-checkmark {
+  background-color: blueviolet; /* Blue-violet color */
+  border-color: blueviolet;
+  transform: scale(1.1); /* Slightly grow the checkbox when checked */
 }
 
-.radio.selected .custom-radio:after {
-    content: "";
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.radio:hover .custom-radio {
-    border-color: #6c63ff;
-}
+/* Show the tick mark when the checkbox is checked */
+.checkbox-input:checked + .checkbox-checkmark::after {
+  transform: rotate(45deg) scale(0.8);
+  opacity: 1;
+}  
 
 .text {
     font-size: 1.7rem;

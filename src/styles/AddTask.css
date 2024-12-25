@@ -1,0 +1,59 @@
+.background-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1001;
+}
+
+.add-task-form {
+    margin: 34vh auto;
+    background-color: white;
+    border-radius: 2rem;
+    height: 20rem;
+    width: 40rem;
+    padding: 1rem;
+    position: relative;
+}
+
+.add-task-title {
+    color: blueviolet;
+    font-size: 3rem;
+    text-align: center;
+}
+
+.add-task-label {
+    font-size: 2rem;
+}
+
+.date-n-time {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.add-task-button {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    border: none;
+    padding: 1rem;
+    color: white;
+    background-color: blueviolet;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.add-task-button:hover {
+    background-color: #5c0b81;
+}
+
+.position-cross {
+    position: absolute;
+    top: 1.5rem;
+    left: 39rem;
+    background-color: transparent;
+    border: none;
+}
