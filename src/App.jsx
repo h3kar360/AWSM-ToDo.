@@ -5,7 +5,6 @@ import MainLayout from './layout/MainLayout';
 import HomePage from './pages/HomePage';
 import TodoPage, { todoLoader } from './pages/TodoPage';
 import AddTodoPage from './pages/AddTodoPage';
-import 'react-toastify/dist/ReactToastify.css';
 
 export const Context = React.createContext();
 
@@ -60,6 +59,21 @@ const App = () => {
     }
   }
 
+  // update title
+  const updateTitle = async (title, id) => {
+    try {
+      await fetch(`/api/api/todo/title/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title: title })
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<MainLayout/>}>
@@ -71,7 +85,7 @@ const App = () => {
         <Route path='/add-todo' element={<AddTodoPage AddNewTodo={addTodo}/>}/>
         <Route path='/todo/:id' element={
           <Context.Provider value={[lastId, setLastId]}>
-            <TodoPage addNewTask={addNewTask} updateIsDone={updateTask}/>
+            <TodoPage addNewTask={addNewTask} updateIsDone={updateTask} updateTitle={updateTitle}/>
           </Context.Provider>
         } loader={todoLoader}/>
       </Route>

@@ -93,4 +93,16 @@ router.get('/api/todo', async (req, res) => {
     }
 });
 
+router.put('/api/todo/title/:id', async (req, res) => {
+    const { title } = req.body;
+    const { id } = req.params;
+
+    try {
+        await MainTodos.findByIdAndUpdate(id, { title: title });
+        return res.sendStatus(200);
+    } catch (error) {
+        return res.status(400).json({ error: error });
+    }
+});
+
 export default router;
