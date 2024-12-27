@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/AddTodoPage.css';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AddTodoPage = ({ AddNewTodo }) => {
     const navigate = useNavigate();
@@ -16,6 +17,8 @@ const AddTodoPage = ({ AddNewTodo }) => {
         };   
 
         const id = await AddNewTodo(newTodo);
+
+        toast.success('Added ToDo successfully');
 
         return isDel ? null : navigate(`/todo/${id}`);
     }

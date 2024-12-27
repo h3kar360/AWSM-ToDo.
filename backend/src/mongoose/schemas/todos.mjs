@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 
-const TodoSchema = new mongoose.Schema({
-    isDone: {
-        type: Boolean,
-        default: false,
-        required: true
-    },
+const TodoSchema = new mongoose.Schema({    
     todo: {
         type: String,
         required: true

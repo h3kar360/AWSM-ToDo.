@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../styles/HomePage.css';
 import TodoCard from '../components/TodoCard';
 import AddTodoCard from '../components/AddTodoCard';
 import Spinner from '../components/Spinner';
+import { Context } from '../App';
 
 const HomePage = () => {
+  const [lastId, setLastId] = useContext(Context);
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,7 +24,19 @@ const HomePage = () => {
       }
     }
 
+    // delete the todo that is empty
+    const delTodo = async () => {
+      try {
+        await fetch(`/api/api/todo/${lastId}`, {
+          method: 'DELETE'
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
     getAllTodos();
+    delTodo();
   }, []);  
   
   return( 

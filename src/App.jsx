@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import './styles/App.css';
 import MainLayout from './layout/MainLayout';
 import HomePage from './pages/HomePage';
 import TodoPage, { todoLoader } from './pages/TodoPage';
 import AddTodoPage from './pages/AddTodoPage';
+import 'react-toastify/dist/ReactToastify.css';
+
+export const Context = React.createContext();
 
 const App = () => {
+  const [lastId, setLastId] = useState('');
   // add todo
   const addTodo = async (newTodo) => {
     try {
@@ -39,12 +43,37 @@ const App = () => {
     }
   }
 
+  // update task
+  const updateTask = async (id, todoId) => {
+    const todoIdJSON = { todoId };
+
+    try {
+      await fetch(`/api/api/todo/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todoIdJSON)
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<MainLayout/>}>
-        <Route index element={<HomePage/>} loader={todoLoader}/>
+        <Route index element={
+          <Context.Provider value={[lastId, setLastId]}>
+            <HomePage/>            
+          </Context.Provider>
+        } loader={todoLoader}/>
         <Route path='/add-todo' element={<AddTodoPage AddNewTodo={addTodo}/>}/>
-        <Route path='/todo/:id' element={<TodoPage addNewTask={addNewTask}/>} loader={todoLoader}/>
+        <Route path='/todo/:id' element={
+          <Context.Provider value={[lastId, setLastId]}>
+            <TodoPage addNewTask={addNewTask} updateIsDone={updateTask}/>
+          </Context.Provider>
+        } loader={todoLoader}/>
       </Route>
     )
   );

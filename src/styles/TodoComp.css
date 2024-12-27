@@ -1,19 +1,18 @@
 .todoComp-container {
-    min-height: 7rem;
-    display: flex;
-    align-items: center;  
-    position: relative;
+  min-height: 7rem;
+  display: flex;
+  align-items: center;  
+  position: relative;
 }
 
 .todoComp-container > div {
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    position: relative;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
 }
 
-/* Style the container */
 .checkbox-container {
   display: inline-block;
   position: relative;
@@ -23,17 +22,15 @@
   height: 40px;
 }
 
-/* Hide the default checkbox */
 .checkbox-input {
   display: none;
 }
 
-/* Style the custom checkbox */
 .checkbox-checkmark {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: #e0e0e0; /* Light gray for the unchecked state */
+  background-color: #e0e0e0; 
   border: 2px solid #e0e0e0;
   position: relative;
   display: flex;
@@ -42,7 +39,6 @@
   transition: background-color 0.3s, border-color 0.3s, transform 0.2s ease-in-out;
 }
 
-/* Add the tick mark */
 .checkbox-checkmark::after {
   content: '';
   width: 0.6rem;
@@ -55,31 +51,31 @@
   opacity: 0;
 }
 
-/* Style when the checkbox is checked */
 .checkbox-input:checked + .checkbox-checkmark {
-  background-color: blueviolet; /* Blue-violet color */
+  background-color: blueviolet; 
   border-color: blueviolet;
-  transform: scale(1.1); /* Slightly grow the checkbox when checked */
+  transform: scale(1.1); 
 }
 
-/* Show the tick mark when the checkbox is checked */
 .checkbox-input:checked + .checkbox-checkmark::after {
   transform: rotate(45deg) scale(0.8);
   opacity: 1;
 }  
 
-.text {
-    font-size: 1.7rem;
-    margin-left: 1rem;
+.value-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
-.x-del {
-    position: absolute;
-    left: 43rem;
-    color: grey;
+.text {
+  font-size: 1.7rem;
+  margin-left: 1rem;
 }
 
 .date-time {
-    color: grey;
-    padding: 0.2rem 1rem;
+  color: grey;
+  padding: 0.2rem 1rem;
+  display: flex;
+  flex-direction: row;
 }

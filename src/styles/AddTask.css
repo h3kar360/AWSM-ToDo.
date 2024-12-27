@@ -28,12 +28,6 @@
     font-size: 2rem;
 }
 
-.date-n-time {
-    margin-top: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
 .add-task-button {
     position: absolute;
     bottom: 2rem;

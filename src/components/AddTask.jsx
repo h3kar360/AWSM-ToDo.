@@ -3,31 +3,27 @@ import '../styles/AddTask.css';
 import { RxCross2 } from 'react-icons/rx';
 import { IconContext } from 'react-icons';
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddTask = ({ setAddTask, addNewTask }) => {
     const navigate = useNavigate();
     const { id } = useParams();
 
     const [taskName, setTaskName] = useState('');
-    const [date, setDate] = useState(null);
-    const [time, setTime] = useState(null);
+    const [dateTime, setDateTime] = useState(null);
 
     const addTask = (e) => {
-        e.preventDefault();
-
-        const dateTimeConCat = `${date}T${time}:00`;
-        const dateTime = new Date(dateTimeConCat);
-
+        e.preventDefault();     
+               
         const addTaskData = {
-            isDone: false,
             todo: taskName,
             date: dateTime
         }
 
-        if(taskName !== ''){
-            addNewTask(addTaskData, id);            
-        }
+        addNewTask(addTaskData, id);
         
+        toast.success('Task added successfully');
         setAddTask(false);
         return navigate(`/todo/${id}`);
     }
@@ -41,24 +37,15 @@ const AddTask = ({ setAddTask, addNewTask }) => {
             type="text" 
             name='taskName' 
             value={taskName} 
-            onChange={(e) => {setTaskName(e.target.value)}}/>
-            <div className='date-n-time'>
-                <div>
-                    <label htmlFor="time" className='add-task-label'>Date</label>
-                    <input 
-                    type="date" 
-                    name='date'
-                    value={date} 
-                    onChange={(e) => {setDate(e.target.value)}}/> 
-                </div>
-                <div>
-                    <label htmlFor="time" className='add-task-label'>Time</label>
-                    <input 
-                    type="time" 
-                    name="time"
-                    value={time} 
-                    onChange={(e) => {setTime(e.target.value)}}/> 
-                </div>
+            onChange={(e) => {setTaskName(e.target.value)}}
+            required/>
+            <div style={{ marginTop: '2rem' }}>
+                <label htmlFor="dateTime" className='add-task-label'>Date and Time</label>
+                <input 
+                type='datetime-local' 
+                name='dateTime'
+                value={dateTime} 
+                onChange={(e) => {setDateTime(e.target.value)}}/> 
             </div>
             <button type='submit' className='add-task-button'>Add Task</button>
             <button className='position-cross' onClick={() => setAddTask(false)}>

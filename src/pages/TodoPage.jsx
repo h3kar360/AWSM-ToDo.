@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import '../styles/TodoReuse.css';
 import TodoComp from '../components/TodoComp';
 import { IconContext } from 'react-icons';
 import { IoAddCircle } from "react-icons/io5";
 import { useLoaderData } from 'react-router-dom';
 import AddTask from '../components/AddTask';
+import { Context } from '../App';
 
-const TodoPage = ({ addNewTask }) => {
-    const [title, setTitle] = useState('');
-    const [addTask, setAddTask] = useState(false);
-    const todo = useLoaderData();
+const TodoPage = ({ addNewTask, updateIsDone }) => {
+  const [lastId, setLastId] = useContext(Context);
+  const [title, setTitle] = useState('');
+  const [addTask, setAddTask] = useState(false);
+  const todo = useLoaderData();
+
+  setLastId(todo._id);
 
   return (
     <>
@@ -21,7 +25,7 @@ const TodoPage = ({ addNewTask }) => {
             <hr />
             {              
               todo.todos.map((task) => (                
-                <TodoComp key={task._id} task={task}/>
+                <TodoComp key={task._id} task={task} updateIsDone={updateIsDone}/>
               ))
             }
             
