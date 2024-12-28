@@ -18,13 +18,22 @@ router.post("/api/user/refresh-access-token", async (req, res) => {
 
   try {
     const storedRefreshToken = await RefreshTokens.findOne({ refreshToken });
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403);
-      const accessToken = generateAccessToken({ username: user.username });
-      res.status(201).json({ accessToken });
-    });
+
+    if (storedRefreshToken.refreshToken === refreshToken) {
+      jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, user) => {
+          if (err) return res.sendStatus(403);
+          const accessToken = generateAccessToken({ username: user.username });
+          return res.status(201).json({ accessToken });
+        }
+      );
+    } else {
+      return res.status(403).send("Unable to find refresh token in database");
+    }
   } catch (error) {
-    return res.status(403).json({ error: error });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -64,10 +73,21 @@ router.post("/api/user/login", async (req, res) => {
         httpOnly: true,
       });
 
-      return res.status(200).json({ accessToken });
+      return res.status(200).json({ accessToken, refreshToken });
     }
 
     return res.status(401).send("Invalid Credentials");
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+});
+
+router.get("/api/user/logout", async (req, res) => {
+  const token = req.cookies.token;
+
+  try {
+    await RefreshTokens.findOneAndDelete({ refreshToken: token });
+    return res.status(204).send("successfully logged out");
   } catch (error) {
     return res.status(500).json({ error: error });
   }
