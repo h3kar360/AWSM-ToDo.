@@ -12,6 +12,11 @@ const TodoSchema = new mongoose.Schema({
 });
 
 const MainTodoSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+    required: true,
+  },
   title: {
     type: String,
     default: "Untitled",

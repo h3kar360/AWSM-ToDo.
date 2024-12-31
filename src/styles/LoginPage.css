@@ -1,0 +1,38 @@
+.login-container {
+  background-color: white;
+  width: 25rem;
+  border-radius: 2rem;
+  margin: 5rem auto;
+  box-shadow: 0 0.3rem 5px rgba(0, 0, 0, 0.15);
+}
+
+.login-container > div {
+  padding: 1.5rem;
+}
+
+.login-title {
+  color: blueviolet;
+  font-size: 4rem;
+}
+
+.input-auth {
+  margin-top: 0.5rem;
+  height: 1.5rem;
+  width: 96%;
+  padding-left: 0.5rem;
+}
+
+.login-button {
+  margin-top: 2.5rem;
+  width: 100%;
+  padding: 1rem 0;
+  font-size: 1.2rem;
+  background-color: blueviolet;
+  color: white;
+  border: none;
+  border-radius: 8px;
+}
+
+.login-button:hover {
+  background-color: #5c0b81;
+}

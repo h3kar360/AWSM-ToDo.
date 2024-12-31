@@ -2,30 +2,30 @@ import React, { useState } from "react";
 import "../styles/AddTask.css";
 import { RxCross2 } from "react-icons/rx";
 import { IconContext } from "react-icons";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddTask = ({ setAddTask, addNewTask }) => {
-  const navigate = useNavigate();
+const AddTask = ({ setAddTask, addNewTask, todoGet }) => {
   const { id } = useParams();
 
   const [taskName, setTaskName] = useState("");
-  const [dateTime, setDateTime] = useState(null);
+  const [dateTime, setDateTime] = useState("");
 
   const addTask = (e) => {
     e.preventDefault();
 
+    const choosenDateTime = dateTime !== "" ? `${dateTime}:00.000+00:00` : "";
+
     const addTaskData = {
       todo: taskName,
-      date: `${dateTime}:00.000+00:00`,
+      date: choosenDateTime,
     };
 
     addNewTask(addTaskData, id);
 
     toast.success("Task added successfully");
     setAddTask(false);
-    return navigate(`/todo/${id}`);
   };
 
   return (

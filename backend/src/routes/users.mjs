@@ -3,13 +3,8 @@ import { Users } from "../mongoose/schemas/users.mjs";
 import { RefreshTokens } from "../mongoose/schemas/refreshTokens.mjs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { authToken } from "../utils/middleware.mjs";
 
 const router = Router();
-
-router.get("/api/user/trial", authToken, (req, res) => {
-  return res.status(201).json(req.user.username);
-});
 
 router.post("/api/user/refresh-access-token", async (req, res) => {
   const refreshToken = req.cookies.token;
@@ -23,9 +18,9 @@ router.post("/api/user/refresh-access-token", async (req, res) => {
       jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET,
-        (err, user) => {
+        async (err, user) => {
           if (err) return res.sendStatus(403);
-          const accessToken = generateAccessToken({ username: user.username });
+          const accessToken = await generateAccessToken(user.username);
           return res.status(201).json({ accessToken });
         }
       );
@@ -59,7 +54,7 @@ router.post("/api/user/login", async (req, res) => {
     const user = await Users.findOne({ username });
 
     if (await bcrypt.compare(password, user.password)) {
-      const accessToken = generateAccessToken({ username });
+      const accessToken = await generateAccessToken(username);
 
       const refreshToken = jwt.sign(
         { username },
@@ -74,11 +69,11 @@ router.post("/api/user/login", async (req, res) => {
       });
 
       return res.status(200).json({ accessToken, refreshToken });
+    } else {
+      return res.status(401).send("Invalid Credentials");
     }
-
-    return res.status(401).send("Invalid Credentials");
   } catch (error) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({ error: "sth wrong" });
   }
 });
 
@@ -93,10 +88,19 @@ router.get("/api/user/logout", async (req, res) => {
   }
 });
 
-const generateAccessToken = (user) => {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "30s",
-  });
+const generateAccessToken = async (username) => {
+  try {
+    const getUser = await Users.findOne({ username });
+
+    const userId = getUser._id;
+    const user = { userId, username };
+
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "5s",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default router;

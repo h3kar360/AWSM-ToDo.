@@ -1,61 +1,87 @@
-import React, { useState, useContext } from 'react';
-import '../styles/TodoReuse.css';
-import TodoComp from '../components/TodoComp';
-import { IconContext } from 'react-icons';
+import React, { useState, useContext, useEffect } from "react";
+import "../styles/TodoReuse.css";
+import TodoComp from "../components/TodoComp";
+import { IconContext } from "react-icons";
 import { IoAddCircle } from "react-icons/io5";
-import { useLoaderData, useParams } from 'react-router-dom';
-import AddTask from '../components/AddTask';
-import { Context } from '../App';
+import { useParams } from "react-router-dom";
+import AddTask from "../components/AddTask";
+import { Context } from "../App";
+import { Token } from "../App";
 
-const TodoPage = ({ addNewTask, updateIsDone, updateTitle }) => {
+const TodoPage = ({ addNewTask, updateIsDone, updateTitle, refresh }) => {
   const { id } = useParams();
   const [lastId, setLastId] = useContext(Context);
-  const [title, setTitle] = useState('');
+  const [token, setToken] = useContext(Token);
+  const [todo, setTodo] = useState({ title: "", todos: [] });
+  const [title, setTitle] = useState("");
   const [addTask, setAddTask] = useState(false);
-  const todo = useLoaderData();
+
+  useEffect(() => {
+    todoGet();
+  }, [token]);
+
+  const todoGet = async () => {
+    try {
+      const res = await fetch(`/api/api/todo/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 403) {
+        await refresh();
+      }
+
+      const data = await res.json();
+      setTodo(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   setLastId(todo._id);
 
   return (
     <>
-      <div className='todo-container'>
+      <div className="todo-container">
         <div>
-            <span role='textbox' 
-             className='title-input' 
-             contentEditable 
-             onInput={(e) => setTitle(e.target.innerText)}
-             onBlur={() => updateTitle(title, id)}>
-              {todo.title}
-            </span>
-            <hr />
-            {              
-              todo.todos.map((task) => (                
-                <TodoComp key={task._id} task={task} updateIsDone={updateIsDone}/>
-              ))
-            }
-            
-            <button className='placeholder-button' onClick={() => {setAddTask(true)}}>
-                <IconContext.Provider
-              value={{ className: 'add-task', size: '4rem' }}
-              >              
-                <IoAddCircle/>    
-              </IconContext.Provider>
-            </button>            
+          <span
+            role="textbox"
+            className="title-input"
+            contentEditable
+            onInput={(e) => setTitle(e.target.innerText)}
+            onBlur={() => updateTitle(title, id)}
+          >
+            {todo.title}
+          </span>
+          <hr />
+          {todo.todos.map((task) => (
+            <TodoComp key={task._id} task={task} updateIsDone={updateIsDone} />
+          ))}
+
+          <button
+            className="placeholder-button"
+            onClick={() => {
+              setAddTask(true);
+            }}
+          >
+            <IconContext.Provider
+              value={{ className: "add-task", size: "4rem" }}
+            >
+              <IoAddCircle />
+            </IconContext.Provider>
+          </button>
         </div>
       </div>
-      {addTask ? <AddTask setAddTask={setAddTask} addNewTask={addNewTask}/> : ''}
-    </>    
-  );  
-}
+      {addTask && (
+        <AddTask
+          setAddTask={setAddTask}
+          addNewTask={addNewTask}
+          todoGet={todoGet}
+        />
+      )}
+    </>
+  );
+};
 
-const todoLoader = async ({ params }) => {
-  try {
-    const res = await fetch(`/api/api/todo/${params.id}`);
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export { TodoPage as default, todoLoader};
+export default TodoPage;
