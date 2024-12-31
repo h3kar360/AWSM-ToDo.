@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Token } from "../App";
 
 const Navbar = ({ logout }) => {
-  const [token, setToken] = useContext(Token);
+  const token = useContext(Token);
 
   const activateButton = ({ isActive }) =>
     isActive ? "nav-button-active" : "nav-button";

@@ -11,7 +11,7 @@ import { Token } from "../App";
 const TodoPage = ({ addNewTask, updateIsDone, updateTitle, refresh }) => {
   const { id } = useParams();
   const [lastId, setLastId] = useContext(Context);
-  const [token, setToken] = useContext(Token);
+  let token = useContext(Token);
   const [todo, setTodo] = useState({ title: "", todos: [] });
   const [title, setTitle] = useState("");
   const [addTask, setAddTask] = useState(false);

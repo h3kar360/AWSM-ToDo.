@@ -9,7 +9,7 @@ import StartingPortal from "../components/StartingPortal";
 
 const HomePage = ({ refresh, logout }) => {
   const [lastId, setLastId] = useContext(Context);
-  const [token, setToken] = useContext(Token);
+  let token = useContext(Token);
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,6 @@ const HomePage = ({ refresh, logout }) => {
           await refresh();
         }
 
-        console.log(token);
         const data = await res.json();
         setTodos(data);
       } catch (error) {
@@ -59,7 +58,9 @@ const HomePage = ({ refresh, logout }) => {
       getAllTodos();
       delTodo();
     }
-  }, [token]);
+
+    console.log(token);
+  }, []);
 
   return (
     <>

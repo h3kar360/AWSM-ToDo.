@@ -18,12 +18,7 @@ export const Token = React.createContext();
 
 const App = () => {
   const [lastId, setLastId] = useState("");
-  const [token, setToken] = useState("");
-
-  // helper function to get token
-  const getToken = () => {
-    return token;
-  };
+  let token = "";
 
   // refresh access token
   const refreshAccessToken = async () => {
@@ -43,7 +38,7 @@ const App = () => {
   const refresh = async () => {
     try {
       const newToken = await refreshAccessToken();
-      setToken(newToken);
+      token = newToken;
     } catch (error) {
       console.log(error);
     }
@@ -52,12 +47,10 @@ const App = () => {
   // add todo
   const addTodo = async (newTodo) => {
     try {
-      const currToken = getToken();
-
       const res = await fetch("/api/api/todo", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${currToken}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newTodo),
@@ -79,12 +72,10 @@ const App = () => {
   // add task
   const addNewTask = async (newTaskData, id) => {
     try {
-      const currToken = getToken();
-
       const res = await fetch(`/api/api/todo/${id}`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${currToken}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newTaskData),
@@ -105,12 +96,10 @@ const App = () => {
     const todoIdJSON = { todoId };
 
     try {
-      const currToken = getToken();
-
       const res = await fetch(`/api/api/todo/${id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${currToken}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(todoIdJSON),
@@ -129,12 +118,10 @@ const App = () => {
   // update title
   const updateTitle = async (title, id) => {
     try {
-      const currToken = getToken();
-
       const res = await fetch(`/api/api/todo/title/${id}`, {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${currToken}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ title: title }),
@@ -188,7 +175,7 @@ const App = () => {
   const logoutUser = async () => {
     try {
       await fetch("/api/api/user/logout");
-      setToken("");
+      token = "";
     } catch (error) {
       console.log(error);
     }
@@ -232,7 +219,7 @@ const App = () => {
   );
 
   return (
-    <Token.Provider value={[token, setToken]}>
+    <Token.Provider value={token}>
       <RouterProvider router={router} />
     </Token.Provider>
   );

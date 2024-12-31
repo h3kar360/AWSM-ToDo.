@@ -6,7 +6,7 @@ import { Token } from "../App";
 const LoginPage = ({ loginUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useContext(Token);
+  let token = useContext(Token);
 
   const navigate = useNavigate();
 
@@ -20,7 +20,8 @@ const LoginPage = ({ loginUser }) => {
 
     try {
       const { accessToken } = await loginUser(loginDetails);
-      setToken(accessToken);
+      token = accessToken;
+      console.log(token);
     } catch (error) {
       console.log(error);
     }
