@@ -20,11 +20,6 @@ const App = () => {
   const [lastId, setLastId] = useState("");
   const [token, setToken] = useState("");
 
-  // helper function to get token
-  const getToken = () => {
-    return token;
-  };
-
   // refresh access token
   const refreshAccessToken = async () => {
     try {
@@ -39,21 +34,10 @@ const App = () => {
     }
   };
 
-  // refresh the page kinda
-  const refresh = async () => {
-    try {
-      const newToken = await refreshAccessToken();
-      setToken(newToken);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   // add todo
-  const addTodo = async (newTodo) => {
+  const addTodo = async (newTodo, currToken = token) => {
     try {
-      const currToken = getToken();
-
+      console.log(currToken);
       const res = await fetch("/api/api/todo", {
         method: "POST",
         headers: {
@@ -63,10 +47,11 @@ const App = () => {
         body: JSON.stringify(newTodo),
       });
 
+      console.log(res.status);
       if (res.status === 403) {
-        await refresh();
-        addTodo(newTodo);
-        return;
+        const newToken = await refreshAccessToken();
+        setToken(newToken);
+        addTodo(newTodo, newToken);
       }
 
       const { id } = await res.json();
@@ -77,10 +62,8 @@ const App = () => {
   };
 
   // add task
-  const addNewTask = async (newTaskData, id) => {
+  const addNewTask = async (newTaskData, id, currToken = token) => {
     try {
-      const currToken = getToken();
-
       const res = await fetch(`/api/api/todo/${id}`, {
         method: "POST",
         headers: {
@@ -91,9 +74,9 @@ const App = () => {
       });
 
       if (res.status === 403) {
-        await refresh();
-        addNewTask(newTaskData, id);
-        return;
+        const newToken = await refreshAccessToken();
+        setToken(newToken);
+        addNewTask(newTaskData, id, newToken);
       }
     } catch (error) {
       console.log(error);
@@ -101,12 +84,10 @@ const App = () => {
   };
 
   // update task
-  const updateTask = async (id, todoId) => {
+  const updateTask = async (id, todoId, currToken = token) => {
     const todoIdJSON = { todoId };
 
     try {
-      const currToken = getToken();
-
       const res = await fetch(`/api/api/todo/${id}`, {
         method: "PUT",
         headers: {
@@ -117,9 +98,9 @@ const App = () => {
       });
 
       if (res.status === 403) {
-        await refresh();
-        updateTask(id, todoId);
-        return;
+        const newToken = await refreshAccessToken();
+        setToken(newToken);
+        updateTask(id, todoId, newToken);
       }
     } catch (error) {
       console.log(error);
@@ -127,10 +108,8 @@ const App = () => {
   };
 
   // update title
-  const updateTitle = async (title, id) => {
+  const updateTitle = async (title, id, currToken = token) => {
     try {
-      const currToken = getToken();
-
       const res = await fetch(`/api/api/todo/title/${id}`, {
         method: "PUT",
         headers: {
@@ -141,9 +120,9 @@ const App = () => {
       });
 
       if (res.status === 403) {
-        await refresh();
-        updateTitle(title, id);
-        return;
+        const newToken = await refreshAccessToken();
+        setToken(newToken);
+        updateTitle(title, id, newToken);
       }
     } catch (error) {
       console.log(error);
@@ -178,7 +157,6 @@ const App = () => {
         body: JSON.stringify(signupDetails),
       });
       const data = await res.json();
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -201,7 +179,7 @@ const App = () => {
           index
           element={
             <Context.Provider value={[lastId, setLastId]}>
-              <HomePage refresh={refresh} />
+              <HomePage refresh={refreshAccessToken} />
             </Context.Provider>
           }
         />
@@ -217,7 +195,7 @@ const App = () => {
                 addNewTask={addNewTask}
                 updateIsDone={updateTask}
                 updateTitle={updateTitle}
-                refresh={refresh}
+                refresh={refreshAccessToken}
               />
             </Context.Provider>
           }

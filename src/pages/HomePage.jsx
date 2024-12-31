@@ -15,16 +15,18 @@ const HomePage = ({ refresh, logout }) => {
 
   useEffect(() => {
     // get all of the todos
-    const getAllTodos = async () => {
+    const getAllTodos = async (currToken = token) => {
       try {
         const res = await fetch("/api/api/todo", {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${currToken}`,
           },
         });
 
         if (res.status === 403) {
-          await refresh();
+          const newToken = await refresh();
+          setToken(newToken);
+          getAllTodos(newToken);
         }
 
         console.log(token);
@@ -38,17 +40,19 @@ const HomePage = ({ refresh, logout }) => {
     };
 
     // delete the todo that is empty
-    const delTodo = async () => {
+    const delTodo = async (currToken = token) => {
       try {
         const res = await fetch(`/api/api/todo/${lastId}`, {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${currToken}`,
           },
         });
 
         if (res.status === 403) {
-          await refresh();
+          const newToken = await refresh();
+          setToken(newToken);
+          delTodo(newToken);
         }
       } catch (error) {
         console.log(error);
@@ -59,7 +63,7 @@ const HomePage = ({ refresh, logout }) => {
       getAllTodos();
       delTodo();
     }
-  }, [token]);
+  }, []);
 
   return (
     <>

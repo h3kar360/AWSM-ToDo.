@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddTask = ({ setAddTask, addNewTask, todoGet }) => {
+const AddTask = ({ setAddTask, addNewTask }) => {
   const { id } = useParams();
 
   const [taskName, setTaskName] = useState("");

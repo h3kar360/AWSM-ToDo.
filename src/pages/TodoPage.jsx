@@ -12,24 +12,26 @@ const TodoPage = ({ addNewTask, updateIsDone, updateTitle, refresh }) => {
   const { id } = useParams();
   const [lastId, setLastId] = useContext(Context);
   const [token, setToken] = useContext(Token);
-  const [todo, setTodo] = useState({ title: "", todos: [] });
+  const [todo, setTodo] = useState({ _id: "", title: "", todos: [] });
   const [title, setTitle] = useState("");
   const [addTask, setAddTask] = useState(false);
 
   useEffect(() => {
     todoGet();
-  }, [token]);
+  }, [addTask]);
 
-  const todoGet = async () => {
+  const todoGet = async (currToken = token) => {
     try {
       const res = await fetch(`/api/api/todo/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${currToken}`,
         },
       });
 
       if (res.status === 403) {
-        await refresh();
+        const newToken = await refresh();
+        setToken(newToken);
+        todoGet(newToken);
       }
 
       const data = await res.json();
