@@ -166,7 +166,7 @@ const App = () => {
   const logoutUser = async () => {
     try {
       await fetch("/api/api/user/logout");
-      token = "";
+      setToken("");
     } catch (error) {
       console.log(error);
     }
