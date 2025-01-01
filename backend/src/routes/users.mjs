@@ -82,6 +82,7 @@ router.get("/api/user/logout", async (req, res) => {
 
   try {
     await RefreshTokens.findOneAndDelete({ refreshToken: token });
+    res.clearCookie("token");
     return res.status(204).send("successfully logged out");
   } catch (error) {
     return res.status(500).json({ error: error });
@@ -96,7 +97,7 @@ const generateAccessToken = async (username) => {
     const user = { userId, username };
 
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "5s",
+      expiresIn: "15m",
     });
   } catch (error) {
     console.log(error);

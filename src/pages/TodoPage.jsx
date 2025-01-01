@@ -5,35 +5,42 @@ import { IconContext } from "react-icons";
 import { IoAddCircle } from "react-icons/io5";
 import { useParams } from "react-router-dom";
 import AddTask from "../components/AddTask";
-import { Context } from "../App";
-import { Token } from "../App";
+import { Context, Token } from "../App";
 
 const TodoPage = ({ addNewTask, updateIsDone, updateTitle, refresh }) => {
   const { id } = useParams();
   const [lastId, setLastId] = useContext(Context);
-  let token = useContext(Token);
-  const [todo, setTodo] = useState({ title: "", todos: [] });
+  const [token, setToken] = useContext(Token);
+  const [todo, setTodo] = useState({
+    _id: "",
+    title: "",
+    todos: [{ todo: "", date: null }],
+  });
   const [title, setTitle] = useState("");
   const [addTask, setAddTask] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     todoGet();
-  }, [token]);
+  }, [addTask, checked]);
 
-  const todoGet = async () => {
+  const todoGet = async (currToken = token) => {
     try {
       const res = await fetch(`/api/api/todo/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${currToken}`,
         },
       });
 
       if (res.status === 403) {
-        await refresh();
+        const newToken = await refresh();
+        setToken(newToken);
+        todoGet(newToken);
       }
 
       const data = await res.json();
       setTodo(data);
+      setChecked(false);
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +63,12 @@ const TodoPage = ({ addNewTask, updateIsDone, updateTitle, refresh }) => {
           </span>
           <hr />
           {todo.todos.map((task) => (
-            <TodoComp key={task._id} task={task} updateIsDone={updateIsDone} />
+            <TodoComp
+              key={task._id}
+              task={task}
+              updateIsDone={updateIsDone}
+              setChecked={setChecked}
+            />
           ))}
 
           <button

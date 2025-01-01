@@ -3,11 +3,10 @@ import "../styles/HomePage.css";
 import TodoCard from "../components/TodoCard";
 import AddTodoCard from "../components/AddTodoCard";
 import Spinner from "../components/Spinner";
-import { Context } from "../App";
-import { Token } from "../App";
+import { Context, Token } from "../App";
 import StartingPortal from "../components/StartingPortal";
 
-const HomePage = ({ refresh, logout }) => {
+const HomePage = ({ refresh }) => {
   const [lastId, setLastId] = useContext(Context);
   let token = useContext(Token);
   const [todos, setTodos] = useState([]);
@@ -15,16 +14,18 @@ const HomePage = ({ refresh, logout }) => {
 
   useEffect(() => {
     // get all of the todos
-    const getAllTodos = async () => {
+    const getAllTodos = async (currToken = token) => {
       try {
         const res = await fetch("/api/api/todo", {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${currToken}`,
           },
         });
 
-        if (res.status === 403) {
-          await refresh();
+        if (res.status === 403 || res.status === 401) {
+          const newToken = await refresh();
+          setToken(newToken);
+          getAllTodos(newToken);
         }
 
         const data = await res.json();
@@ -37,29 +38,29 @@ const HomePage = ({ refresh, logout }) => {
     };
 
     // delete the todo that is empty
-    const delTodo = async () => {
+    const delTodo = async (currToken = token) => {
       try {
         const res = await fetch(`/api/api/todo/${lastId}`, {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${currToken}`,
           },
         });
 
         if (res.status === 403) {
-          await refresh();
+          const newToken = await refresh();
+          setToken(newToken);
+          delTodo(newToken);
         }
       } catch (error) {
         console.log(error);
       }
     };
 
+    getAllTodos();
     if (token !== "") {
-      getAllTodos();
       delTodo();
     }
-
-    console.log(token);
   }, []);
 
   return (

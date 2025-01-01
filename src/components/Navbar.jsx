@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
 import "../styles/Navbar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Token } from "../App";
 
 const Navbar = ({ logout }) => {
-  const token = useContext(Token);
+  const navigate = useNavigate();
+
+  const [token, setToken] = useContext(Token);
 
   const activateButton = ({ isActive }) =>
     isActive ? "nav-button-active" : "nav-button";
@@ -27,7 +29,13 @@ const Navbar = ({ logout }) => {
               Login
             </NavLink>
           ) : (
-            <button onClick={logout} className="nav-button">
+            <button
+              onClick={() => {
+                logout();
+                return navigate("/");
+              }}
+              className="nav-button"
+            >
               Logout
             </button>
           )}
