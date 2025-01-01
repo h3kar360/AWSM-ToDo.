@@ -51,10 +51,11 @@ const App = () => {
       if (res.status === 403) {
         const newToken = await refreshAccessToken();
         setToken(newToken);
-        addTodo(newTodo, newToken);
+        return addTodo(newTodo, newToken);
       }
 
       const { id } = await res.json();
+      console.log(id);
       return id;
     } catch (error) {
       console.log(error);
@@ -100,7 +101,7 @@ const App = () => {
       if (res.status === 403) {
         const newToken = await refreshAccessToken();
         setToken(newToken);
-        updateTask(id, todoId, newToken);
+        return updateTask(id, todoId, newToken);
       }
     } catch (error) {
       console.log(error);

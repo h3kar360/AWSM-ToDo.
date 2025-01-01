@@ -3,11 +3,10 @@ import "../styles/HomePage.css";
 import TodoCard from "../components/TodoCard";
 import AddTodoCard from "../components/AddTodoCard";
 import Spinner from "../components/Spinner";
-import { Context } from "../App";
-import { Token } from "../App";
+import { Context, Token } from "../App";
 import StartingPortal from "../components/StartingPortal";
 
-const HomePage = ({ refresh, logout }) => {
+const HomePage = ({ refresh }) => {
   const [lastId, setLastId] = useContext(Context);
   const [token, setToken] = useContext(Token);
   const [todos, setTodos] = useState([]);
@@ -23,13 +22,12 @@ const HomePage = ({ refresh, logout }) => {
           },
         });
 
-        if (res.status === 403) {
+        if (res.status === 403 || res.status === 401) {
           const newToken = await refresh();
           setToken(newToken);
           getAllTodos(newToken);
         }
 
-        console.log(token);
         const data = await res.json();
         setTodos(data);
       } catch (error) {
@@ -59,8 +57,8 @@ const HomePage = ({ refresh, logout }) => {
       }
     };
 
+    getAllTodos();
     if (token !== "") {
-      getAllTodos();
       delTodo();
     }
   }, []);

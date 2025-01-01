@@ -1,10 +1,9 @@
 import React from "react";
 import "../styles/TodoComp.css";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const TodoComp = ({ task, updateIsDone }) => {
-  const navigate = useNavigate();
+const TodoComp = ({ task, updateIsDone, setChecked }) => {
   const { id } = useParams();
   let date;
   let time;
@@ -20,7 +19,7 @@ const TodoComp = ({ task, updateIsDone }) => {
       if (e.target.checked) {
         toast.success("Task restored succesfully");
         updateIsDone(id, task._id);
-        return navigate(`/todo/${id}`);
+        setChecked(true);
       }
     }, 1200);
   };

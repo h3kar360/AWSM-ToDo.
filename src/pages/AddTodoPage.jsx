@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 const AddTodoPage = ({ AddNewTodo }) => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [isDel, setIsDel] = useState(false);
 
   const createNewTodo = async (e) => {
     e.preventDefault();
@@ -20,11 +19,10 @@ const AddTodoPage = ({ AddNewTodo }) => {
 
     toast.success("Added ToDo successfully");
 
-    return !isDel && navigate(`/todo/${id}`);
+    return navigate(`/todo/${id}`);
   };
 
-  const chooseNav = () => {
-    setIsDel(() => true);
+  const cancel = () => {
     return navigate("/");
   };
 
@@ -32,7 +30,7 @@ const AddTodoPage = ({ AddNewTodo }) => {
     <div className="todo-container">
       <div>
         <form onSubmit={createNewTodo}>
-          <label htmlFor="title">Add a Task</label>
+          <label htmlFor="title">Add a ToDo</label>
           <hr />
           <span
             role="textbox"
@@ -42,10 +40,15 @@ const AddTodoPage = ({ AddNewTodo }) => {
           ></span>
 
           <div className="button-container">
-            <button className="del-button" onClick={chooseNav}>
+            <button
+              className="del-button"
+              type="button"
+              name="cancel"
+              onClick={cancel}
+            >
               Cancel
             </button>
-            <button className="submit-button" type="submit">
+            <button className="submit-button" type="submit" name="create">
               Create
             </button>
           </div>
