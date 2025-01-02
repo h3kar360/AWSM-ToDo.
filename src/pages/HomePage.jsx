@@ -57,8 +57,8 @@ const HomePage = ({ refresh }) => {
       }
     };
 
+    getAllTodos();
     if (token !== "") {
-      getAllTodos();
       delTodo();
     }
   }, []);
