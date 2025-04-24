@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(routes);
 
 mongoose
-    .connect("mongodb://127.0.0.1/todos_db")
+    .connect(process.env.MONGODB_URI)
     .then(() => console.log("connected to database"))
     .catch((err) => console.log(err));
 
