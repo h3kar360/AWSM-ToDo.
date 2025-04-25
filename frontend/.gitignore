@@ -23,8 +23,3 @@ dist-ssr
 *.sln
 *.sw?
 
-#ignore backend node modules
-backend/node_modules/
-
-#ignore the .env file
-backend/.env
