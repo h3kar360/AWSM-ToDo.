@@ -26,7 +26,7 @@ const TodoPage = ({ addNewTask, updateIsDone, updateTitle, refresh }) => {
 
     const todoGet = async (currToken = token) => {
         try {
-            const res = await fetch(`/api/api/todo/${id}`, {
+            const res = await fetch(`${import.meta.env.API}/api/todo/${id}`, {
                 headers: {
                     Authorization: `Bearer ${currToken}`,
                 },

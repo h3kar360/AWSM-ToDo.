@@ -16,7 +16,7 @@ const HomePage = ({ refresh }) => {
         // get all of the todos
         const getAllTodos = async (currToken = token) => {
             try {
-                const res = await fetch("/api/api/todo", {
+                const res = await fetch(`${import.meta.env.API}/api/todo`, {
                     headers: {
                         Authorization: `Bearer ${currToken}`,
                     },
@@ -40,12 +40,15 @@ const HomePage = ({ refresh }) => {
         // delete the todo that is empty
         const delTodo = async (currToken = token) => {
             try {
-                const res = await fetch(`/api/api/todo/${lastId}`, {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${currToken}`,
-                    },
-                });
+                const res = await fetch(
+                    `${import.meta.env.API}/api/todo/${lastId}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${currToken}`,
+                        },
+                    }
+                );
 
                 if (res.status === 403) {
                     const newToken = await refresh();
