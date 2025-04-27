@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use(
     cors({
-        origin: "lavish-flexibility-production-92a7.up.railway.app",
+        origin: "https://lavish-flexibility-production-92a7.up.railway.app",
     })
 );
 
