@@ -23,23 +23,31 @@ const App = () => {
     // refresh access token
     const refreshAccessToken = async () => {
         try {
-            const token = await fetch(
-                `${import.meta.env.VITE_API}/api/user/refresh-access-token`,
-                {
-                    method: "POST",
-                    "Content-Type": "application/json",
+            try {
+                const res = await fetch(
+                    `${import.meta.env.VITE_API}/api/user/refresh-access-token`,
+                    {
+                        method: "POST",
+                        credentials: "include", // Important for cookies
+                    }
+                );
+
+                if (res.ok) {
+                    const { accessToken } = await res.json();
+                    setToken(accessToken);
+                } else {
+                    setToken(""); // Clear token if refresh fails
                 }
-            );
-            const { accessToken } = await token.json();
-            return accessToken;
+            } catch (err) {
+                console.log("Token refresh failed:", err);
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
     useEffect(() => {
-        const newToken = refreshAccessToken();
-        setToken(newToken);
+        refreshAccessToken();
     }, []);
 
     // add todo

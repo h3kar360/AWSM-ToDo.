@@ -54,8 +54,7 @@ const HomePage = ({ refresh }) => {
                 );
 
                 if (res.status === 403) {
-                    const newToken = await refresh();
-                    setToken(newToken);
+                    await refresh();
                     delTodo(newToken);
                 }
             } catch (error) {
