@@ -38,7 +38,8 @@ const App = () => {
     };
 
     useEffect(() => {
-        refreshAccessToken();
+        const newToken = refreshAccessToken();
+        setToken(newToken);
     }, []);
 
     // add todo
@@ -62,7 +63,6 @@ const App = () => {
             }
 
             const { id } = await res.json();
-            console.log(id);
             return id;
         } catch (error) {
             console.log(error);

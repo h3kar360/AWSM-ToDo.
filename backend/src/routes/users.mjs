@@ -72,6 +72,8 @@ router.post("/api/user/login", async (req, res) => {
 
             res.cookie("token", refreshToken, {
                 httpOnly: true,
+                secure: true,
+                sameSite: "None",
             });
 
             return res.status(200).json({ accessToken, refreshToken });
