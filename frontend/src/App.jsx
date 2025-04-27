@@ -28,15 +28,17 @@ const App = () => {
                     `${import.meta.env.VITE_API}/api/user/refresh-access-token`,
                     {
                         method: "POST",
-                        credentials: "include", // Important for cookies
+                        credentials: "include",
                     }
                 );
 
                 if (res.ok) {
                     const { accessToken } = await res.json();
                     setToken(accessToken);
+                    return accessToken;
                 } else {
-                    setToken(""); // Clear token if refresh fails
+                    setToken("");
+                    return "";
                 }
             } catch (err) {
                 console.log("Token refresh failed:", err);

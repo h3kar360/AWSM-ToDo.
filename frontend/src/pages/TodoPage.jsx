@@ -36,7 +36,7 @@ const TodoPage = ({ addNewTask, updateIsDone, updateTitle, refresh }) => {
             );
 
             if (res.status === 403) {
-                await refresh();
+                const newToken = await refresh();
                 todoGet(newToken);
             }
 
