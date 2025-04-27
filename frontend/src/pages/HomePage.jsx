@@ -16,11 +16,14 @@ const HomePage = ({ refresh }) => {
         // get all of the todos
         const getAllTodos = async (currToken = token) => {
             try {
-                const res = await fetch(`${import.meta.env.API}/api/todo`, {
-                    headers: {
-                        Authorization: `Bearer ${currToken}`,
-                    },
-                });
+                const res = await fetch(
+                    `${import.meta.env.VITE_API}/api/todo`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${currToken}`,
+                        },
+                    }
+                );
 
                 if (res.status === 403 || res.status === 401) {
                     const newToken = await refresh();
@@ -41,7 +44,7 @@ const HomePage = ({ refresh }) => {
         const delTodo = async (currToken = token) => {
             try {
                 const res = await fetch(
-                    `${import.meta.env.API}/api/todo/${lastId}`,
+                    `${import.meta.env.VITE_API}/api/todo/${lastId}`,
                     {
                         method: "DELETE",
                         headers: {

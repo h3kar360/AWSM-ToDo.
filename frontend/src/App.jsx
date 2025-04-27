@@ -24,7 +24,7 @@ const App = () => {
     const refreshAccessToken = async () => {
         try {
             const token = await fetch(
-                `${import.meta.env.API}/api/user/refresh-access-token`,
+                `${import.meta.env.VITE_API}/api/user/refresh-access-token`,
                 {
                     method: "POST",
                     "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const App = () => {
     const addTodo = async (newTodo, currToken = token) => {
         try {
             console.log(currToken);
-            const res = await fetch(`${import.meta.env.API}/api/todo`, {
+            const res = await fetch(`${import.meta.env.VITE_API}/api/todo`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${currToken}`,
@@ -68,14 +68,17 @@ const App = () => {
     // add task
     const addNewTask = async (newTaskData, id, currToken = token) => {
         try {
-            const res = await fetch(`${import.meta.env.API}/api/todo/${id}`, {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${currToken}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(newTaskData),
-            });
+            const res = await fetch(
+                `${import.meta.env.VITE_API}/api/todo/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${currToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(newTaskData),
+                }
+            );
 
             if (res.status === 403) {
                 const newToken = await refreshAccessToken();
@@ -92,14 +95,17 @@ const App = () => {
         const todoIdJSON = { todoId };
 
         try {
-            const res = await fetch(`${import.meta.env.API}/api/todo/${id}`, {
-                method: "PUT",
-                headers: {
-                    Authorization: `Bearer ${currToken}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(todoIdJSON),
-            });
+            const res = await fetch(
+                `${import.meta.env.VITE_API}/api/todo/${id}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${currToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(todoIdJSON),
+                }
+            );
 
             if (res.status === 403) {
                 const newToken = await refreshAccessToken();
@@ -115,7 +121,7 @@ const App = () => {
     const updateTitle = async (title, id, currToken = token) => {
         try {
             const res = await fetch(
-                `${import.meta.env.API}/api/todo/title/${id}`,
+                `${import.meta.env.VITE_API}/api/todo/title/${id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -139,13 +145,16 @@ const App = () => {
     //login user
     const loginUser = async (loginDetails) => {
         try {
-            const res = await fetch(`${import.meta.env.API}/api/user/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(loginDetails),
-            });
+            const res = await fetch(
+                `${import.meta.env.VITE_API}/api/user/login`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(loginDetails),
+                }
+            );
             const data = await res.json();
             return data;
         } catch (error) {
@@ -156,13 +165,16 @@ const App = () => {
     //signup user
     const signupUser = async (signupDetails) => {
         try {
-            const res = await fetch(`${import.meta.env.API}/api/user/signup`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(signupDetails),
-            });
+            const res = await fetch(
+                `${import.meta.env.VITE_API}/api/user/signup`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(signupDetails),
+                }
+            );
             const data = await res.json();
         } catch (error) {
             console.log(error);
@@ -172,7 +184,7 @@ const App = () => {
     //logout user
     const logoutUser = async () => {
         try {
-            await fetch(`${import.meta.env.API}/api/user/logout`);
+            await fetch(`${import.meta.env.VITE_API}/api/user/logout`);
             setToken("");
         } catch (error) {
             console.log(error);
