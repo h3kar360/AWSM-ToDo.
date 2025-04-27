@@ -16,14 +16,11 @@ const HomePage = ({ refresh }) => {
         // get all of the todos
         const getAllTodos = async (currToken = token) => {
             try {
-                const res = await fetch(
-                    "https://awsm-todo-production.up.railway.app/api/todo",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${currToken}`,
-                        },
-                    }
-                );
+                const res = await fetch("/api/api/todo", {
+                    headers: {
+                        Authorization: `Bearer ${currToken}`,
+                    },
+                });
 
                 if (res.status === 403 || res.status === 401) {
                     const newToken = await refresh();
@@ -43,15 +40,12 @@ const HomePage = ({ refresh }) => {
         // delete the todo that is empty
         const delTodo = async (currToken = token) => {
             try {
-                const res = await fetch(
-                    `https://awsm-todo-production.up.railway.app/api/todo/${lastId}`,
-                    {
-                        method: "DELETE",
-                        headers: {
-                            Authorization: `Bearer ${currToken}`,
-                        },
-                    }
-                );
+                const res = await fetch(`/api/api/todo/${lastId}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${currToken}`,
+                    },
+                });
 
                 if (res.status === 403) {
                     const newToken = await refresh();

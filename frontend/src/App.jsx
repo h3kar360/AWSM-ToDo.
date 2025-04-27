@@ -23,13 +23,10 @@ const App = () => {
     // refresh access token
     const refreshAccessToken = async () => {
         try {
-            const token = await fetch(
-                "https://awsm-todo-production.up.railway.app/api/user/refresh-access-token",
-                {
-                    method: "POST",
-                    "Content-Type": "application/json",
-                }
-            );
+            const token = await fetch("/api/api/user/refresh-access-token", {
+                method: "POST",
+                "Content-Type": "application/json",
+            });
             const { accessToken } = await token.json();
             return accessToken;
         } catch (error) {
@@ -41,17 +38,14 @@ const App = () => {
     const addTodo = async (newTodo, currToken = token) => {
         try {
             console.log(currToken);
-            const res = await fetch(
-                "https://awsm-todo-production.up.railway.app/api/todo",
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${currToken}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(newTodo),
-                }
-            );
+            const res = await fetch("/api/api/todo", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${currToken}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newTodo),
+            });
 
             console.log(res.status);
             if (res.status === 403) {
@@ -71,17 +65,14 @@ const App = () => {
     // add task
     const addNewTask = async (newTaskData, id, currToken = token) => {
         try {
-            const res = await fetch(
-                `https://awsm-todo-production.up.railway.app/api/todo/${id}`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${currToken}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(newTaskData),
-                }
-            );
+            const res = await fetch(`/api/api/todo/${id}`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${currToken}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newTaskData),
+            });
 
             if (res.status === 403) {
                 const newToken = await refreshAccessToken();
@@ -98,17 +89,14 @@ const App = () => {
         const todoIdJSON = { todoId };
 
         try {
-            const res = await fetch(
-                `https://awsm-todo-production.up.railway.app/api/todo/${id}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${currToken}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(todoIdJSON),
-                }
-            );
+            const res = await fetch(`/api/api/todo/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${currToken}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(todoIdJSON),
+            });
 
             if (res.status === 403) {
                 const newToken = await refreshAccessToken();
@@ -123,17 +111,14 @@ const App = () => {
     // update title
     const updateTitle = async (title, id, currToken = token) => {
         try {
-            const res = await fetch(
-                `https://awsm-todo-production.up.railway.app/api/todo/title/${id}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${currToken}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ title: title }),
-                }
-            );
+            const res = await fetch(`/api/api/todo/title/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${currToken}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ title: title }),
+            });
 
             if (res.status === 403) {
                 const newToken = await refreshAccessToken();
@@ -148,16 +133,13 @@ const App = () => {
     //login user
     const loginUser = async (loginDetails) => {
         try {
-            const res = await fetch(
-                "https://awsm-todo-production.up.railway.app/api/user/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(loginDetails),
-                }
-            );
+            const res = await fetch("/api/api/user/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(loginDetails),
+            });
             const data = await res.json();
             return data;
         } catch (error) {
@@ -168,16 +150,13 @@ const App = () => {
     //signup user
     const signupUser = async (signupDetails) => {
         try {
-            const res = await fetch(
-                "https://awsm-todo-production.up.railway.app/api/user/signup",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(signupDetails),
-                }
-            );
+            const res = await fetch("/api/api/user/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(signupDetails),
+            });
             const data = await res.json();
         } catch (error) {
             console.log(error);
@@ -187,9 +166,7 @@ const App = () => {
     //logout user
     const logoutUser = async () => {
         try {
-            await fetch(
-                "https://awsm-todo-production.up.railway.app/api/user/logout"
-            );
+            await fetch("/api/api/user/logout");
             setToken("");
         } catch (error) {
             console.log(error);

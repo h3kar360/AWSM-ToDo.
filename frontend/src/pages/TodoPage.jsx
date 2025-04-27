@@ -26,14 +26,11 @@ const TodoPage = ({ addNewTask, updateIsDone, updateTitle, refresh }) => {
 
     const todoGet = async (currToken = token) => {
         try {
-            const res = await fetch(
-                `https://awsm-todo-production.up.railway.app/api/todo/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${currToken}`,
-                    },
-                }
-            );
+            const res = await fetch(`/api/api/todo/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${currToken}`,
+                },
+            });
 
             if (res.status === 403) {
                 const newToken = await refresh();
