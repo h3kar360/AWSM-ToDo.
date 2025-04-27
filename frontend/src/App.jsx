@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Route,
     createBrowserRouter,
@@ -230,6 +230,29 @@ const App = () => {
             </Route>
         )
     );
+
+    useEffect(() => {
+        const refreshAccessToken = async () => {
+            try {
+                const res = await fetch(
+                    `${import.meta.env.VITE_API}/api/user/refresh-access-token`,
+                    {
+                        method: "POST",
+                        credentials: "include",
+                    }
+                );
+
+                if (res.ok) {
+                    const { accessToken } = await res.json();
+                    setToken(accessToken);
+                }
+            } catch (err) {
+                console.log("Token refresh failed:", err);
+            }
+        };
+
+        refreshAccessToken();
+    }, []);
 
     return (
         <Token.Provider value={[token, setToken]}>
