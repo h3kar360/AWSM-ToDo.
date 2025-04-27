@@ -8,14 +8,15 @@ import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.use(
+    cors({
+        origin: "lavish-flexibility-production-92a7.up.railway.app",
+    })
+);
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(routes);
-app.use(
-    cors({
-        origin: "*",
-    })
-);
 
 mongoose
     .connect(process.env.MONGODB_URI)
