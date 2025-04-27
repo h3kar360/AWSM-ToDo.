@@ -3,6 +3,7 @@ import express from "express";
 import routes from "../src/routes/index.mjs";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -10,6 +11,11 @@ const PORT = process.env.PORT || 8000;
 app.use(cookieParser());
 app.use(express.json());
 app.use(routes);
+app.use(
+    cors({
+        origin: "https://lavish-flexibility-production-92a7.up.railway.app",
+    })
+);
 
 mongoose
     .connect(process.env.MONGODB_URI)

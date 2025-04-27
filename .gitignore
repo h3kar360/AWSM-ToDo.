@@ -3,3 +3,6 @@ backend/node_modules/
 
 #ignore the .env file
 backend/.env
+
+#ignore .env file in the frontend
+frontend/.env
