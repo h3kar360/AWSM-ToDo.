@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(routes);
 app.use(
     cors({
-        origin: "https://lavish-flexibility-production-92a7.up.railway.app",
+        origin: "*",
     })
 );
 
